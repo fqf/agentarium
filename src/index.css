@@ -26,7 +26,7 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0.205 0.006 285);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -83,4 +83,13 @@
 
 html {
   @apply scrollbar-thin scrollbar-thumb-accent-foreground/20;
+}
+
+.window-drag {
+  app-region: drag;
+  user-select: none;
+}
+
+.window-no-drag {
+  app-region: no-drag;
 }
