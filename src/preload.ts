@@ -1,3 +1,18 @@
-// oxlint-disable eslint-plugin-unicorn/no-empty-file
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+import { contextBridge, ipcRenderer } from "electron";
+
+contextBridge.exposeInMainWorld("electronAPI", {
+  minimizeWindow: () => ipcRenderer.send("window:minimize"),
+  maximizeWindow: () => ipcRenderer.send("window:maximize"),
+  onMaximizedChange: (callback: (isMaximized: boolean) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, value: boolean) => {
+      callback(value);
+    };
+
+    ipcRenderer.on("window:maximized-changed", listener);
+
+    return () => {
+      ipcRenderer.removeListener("window:maximized-changed", listener);
+    };
+  },
+  closeWindow: () => ipcRenderer.send("window:close"),
+});
